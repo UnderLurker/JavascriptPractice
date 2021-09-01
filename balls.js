@@ -66,18 +66,21 @@ var mouse={
 }
 
 window.onmousemove=function(e){
-    this.mouse.x=e.x;
-    this.mouse.y=e.y;
+    this.mouse.x=e.clientX;
+    this.mouse.y=e.clientY;
 }
 
 function point(x,y,vx,vy){
     this.x=x;
     this.y=y;
-    this.radius=0.5;
+    this.radius=5;
     this.vx=vx;
     this.vy=vy;
     this.run=function(){
-        ctx.fillStyle="black";
+        var color=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,2.5);
+        color.addColorStop(0,"rgba(0,255,0,1)");
+        color.addColorStop(1,"rgba(255,255,255,0)")
+        ctx.fillStyle=color;
         ctx.beginPath();
         ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
         ctx.closePath();
@@ -101,7 +104,8 @@ function point(x,y,vx,vy){
             this.y=this.radius;
         }
         if(Math.pow(mouse.x-this.x,2)+Math.pow(mouse.y-this.y,2)<=Math.pow(100,2)){
-            ctx.strokeStyle="pink";
+            ctx.strokeStyle="orange";
+            console.log(mouse.x+"  "+mouse.y);
             ctx.beginPath();
             ctx.moveTo(mouse.x,mouse.y);
             ctx.lineTo(this.x,this.y);
@@ -110,14 +114,14 @@ function point(x,y,vx,vy){
         }
     }
 }
-
+var count=300;
 var points=[];
 var visit=[];
-for(var i=0;i<100;i++){
+for(var i=0;i<count;i++){
     var x=Math.floor(Math.random()*canvas.width);
     var y=Math.floor(Math.random()*canvas.height);
-    var vx=Math.random()>0.5?0.5:-0.5;
-    var vy=Math.random()>0.5?0.5:-0.5;
+    var vx=Math.random()-0.5;
+    var vy=Math.random()-0.5;
     points.push(new point(x,y,vx,vy));
     visit.push(false);
 }
@@ -125,23 +129,23 @@ for(var i=0;i<100;i++){
 function pointAnimation(){
     requestAnimationFrame(pointAnimation);
     clear();
-    for(var i =0;i<100;i++){
+    for(var i =0;i<count;i++){
         points[i].run();
-        for(var j=0;j<100;j++){
-            if(j==i||visit[j]) continue;
-            if(Math.pow(points[i].x-points[j].y,2)+Math.pow(points[i].y-points[j].y,2)<=Math.pow(10,2)){
-                visit[j]=true;
-                ctx.strokeStyle="pink";
-                ctx.beginPath();
-                ctx.moveTo(points[i].x,points[i].y);
-                ctx.lineTo(points[j].x,points[j].y);
-                ctx.closePath();
-                ctx.stroke();
-            }
-            else{
-                visit[j]=false;
-            }
-        }
+        // for(var j=0;j<100;j++){
+        //     if(j==i||visit[j]) continue;
+        //     if(Math.pow(points[i].x-points[j].y,2)+Math.pow(points[i].y-points[j].y,2)<=Math.pow(10,2)){
+        //         visit[j]=true;
+        //         ctx.strokeStyle="pink";
+        //         ctx.beginPath();
+        //         ctx.moveTo(points[i].x,points[i].y);
+        //         ctx.lineTo(points[j].x,points[j].y);
+        //         ctx.closePath();
+        //         ctx.stroke();
+        //     }
+        //     else{
+        //         visit[j]=false;
+        //     }
+        // }
     }
 }
 
