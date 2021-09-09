@@ -37,7 +37,12 @@ function drawFiveAngle(){
     canvasContent.restore();
     window.requestAnimationFrame(drawFiveAngle);
 }
-//window.requestAnimationFrame(drawFiveAngle);
+window.requestAnimationFrame(drawFiveAngle);
+
+
+
+
+
 var a=10;
 var b=10;
 
@@ -55,7 +60,7 @@ function revolve(){
     ctx.beginPath();
     for(var i=0,j=0;i<=Math.PI*2;i+=angleAdd,j+=angleAdd2){
         var rx=x+r1*Math.cos(i)+r2*Math.cos(j)+r3*Math.cos(i);
-        var ry=y+r1*Math.sin(i)+r2*Math.sin(j)+r3*Math.sin(j);
+        var ry=y+r1*Math.sin(i)+r2*Math.sin(j)+r3*Math.sin(i);
         ctx.arc(rx,ry,0.1,0,Math.PI*2);
         ctx.stroke();
     }
@@ -68,7 +73,16 @@ function revolve(){
     }
     window.requestAnimationFrame(revolve);
 }
-window.requestAnimationFrame(revolve);
+// window.requestAnimationFrame(revolve);
+
+
+
+
+
+
+
+
+
 // function createRect(a,b,c,d){
 //     ctx.fillRect(a,b,c,d);
 //     ctx.fill();
