@@ -2,7 +2,10 @@
 
 var canvas=document.getElementById('canvas');
 var ctx=canvas.getContext('2d');
-var 
+
+function clear(ctx,width,height) {
+    ctx.clearRect(0,0,width,height);
+}
 /**
  * 
  * @param {number} r 
@@ -24,6 +27,7 @@ var mouse={
 window.onmousemove=function(e){
     this.mouse.x=e.clientX;
     this.mouse.y=e.clientY;
+    console.log(this.mouse.x,this.mouse.y);
 }
 /**
  * 
@@ -48,8 +52,11 @@ function spot(w,color,radius,origin,size){
     this.run=function(){
         this.x=mouse.x+this.radius*Math.cos(this.origin);
         this.y=mouse.y+this.radius*Math.sin(this.origin);
+        var myStyle=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.size);
+        myStyle.addColorStop(0,"rgba("+color.r+","+color.g+","+color.b+",1)");
+        myStyle.addColorStop(1,"rgba("+color.r+","+color.g+","+color.b+",0.5)");
         ctx.beginPath();
-        ctx.fillStyle="rgb("+color.r+","+color.g+","+color.b+")";
+        ctx.fillStyle=myStyle;
         ctx.arc(this.x,this.y,this.size,0,2*Math.PI);
         ctx.fill();
         ctx.closePath();
@@ -59,19 +66,19 @@ function spot(w,color,radius,origin,size){
 var count=10;
 var spots=[];
 for(var i=0;i<count;i++){
-    var w=Math.random();
+    var w=Math.random()/10+0.001;
     var color=new Color(Math.floor(Math.random()*255),
                         Math.floor(Math.random()*255),
                         Math.floor(Math.random()*255));
-    var radius=Math.random()*20;
+    var radius=Math.random()*30+30;
     var origin=Math.random()*Math.PI*2;
-    var size=Math.random();
+    var size=Math.random()*2+3;
     spots.push(new spot(w,color,radius,origin,size));
 }
 
 function spotAnimation(){
     requestAnimationFrame(spotAnimation);
-    ctx.clearRect(canvas.width,canvas.height);
+    clear(ctx,canvas.width,canvas.height);
     for(var i=0;i<count;i++){
         spots[i].run();
     }
